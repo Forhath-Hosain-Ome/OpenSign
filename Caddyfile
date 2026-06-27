@@ -1,7 +1,12 @@
 {$HOST_URL} {
-    reverse_proxy client:3000
+    # Route API requests to the backend server
     handle_path /api/* {
+        rewrite * {uri}
         reverse_proxy server:8080
-            rewrite * {uri}
+    }
+
+    # Route everything else to the client frontend
+    handle {
+        reverse_proxy client:3000
     }
 }
